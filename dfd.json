@@ -1,0 +1,121 @@
+{
+  "summary": {
+    "title": "RoadReady Rental Agreement DFD",
+    "owner": "RoadReady Security Team",
+    "description": "Data Flow Diagram for Rental Agreement Viewing & Download Feature"
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [
+      {
+        "title": "Rental Agreement DFD",
+        "id": 0,
+        "diagramType": "STRIDE",
+        "cells": [
+          {
+            "shape": "actor",
+            "name": "Customer / Attacker",
+            "id": "e1",
+            "type": "tm.Actor"
+          },
+          {
+            "shape": "actor",
+            "name": "SMTP Email Gateway",
+            "id": "e2",
+            "type": "tm.Actor"
+          },
+          {
+            "shape": "process",
+            "name": "P1: Authenticate Session",
+            "id": "p1",
+            "type": "tm.Process"
+          },
+          {
+            "shape": "process",
+            "name": "P2: Validate Request & Download Route",
+            "id": "p2",
+            "type": "tm.Process"
+          },
+          {
+            "shape": "process",
+            "name": "P3: Enforce Object Access (IDOR Check)",
+            "id": "p3",
+            "type": "tm.Process"
+          },
+          {
+            "shape": "store",
+            "name": "DS1: Sessions DB",
+            "id": "ds1",
+            "type": "tm.Store"
+          },
+          {
+            "shape": "store",
+            "name": "DS2: Agreements Store",
+            "id": "ds2",
+            "type": "tm.Store"
+          },
+          {
+            "shape": "boundary",
+            "name": "Public Network / Application Boundary",
+            "id": "tb1",
+            "type": "tm.Boundary"
+          },
+          {
+            "shape": "flow",
+            "name": "1. Submit Auth Credentials",
+            "source": { "id": "e1" },
+            "target": { "id": "p1" }
+          },
+          {
+            "shape": "flow",
+            "name": "2. Verify Active Session",
+            "source": { "id": "p1" },
+            "target": { "id": "ds1" }
+          },
+          {
+            "shape": "flow",
+            "name": "3. Return Auth Token",
+            "source": { "id": "p1" },
+            "target": { "id": "e1" }
+          },
+          {
+            "shape": "flow",
+            "name": "4. GET /api/agreements/{id}",
+            "source": { "id": "e1" },
+            "target": { "id": "p2" }
+          },
+          {
+            "shape": "flow",
+            "name": "5. Forward Target ID & Session",
+            "source": { "id": "p2" },
+            "target": { "id": "p3" }
+          },
+          {
+            "shape": "flow",
+            "name": "6. Check Ownership Mapping",
+            "source": { "id": "p3" },
+            "target": { "id": "ds1" }
+          },
+          {
+            "shape": "flow",
+            "name": "7. Query Document Payload",
+            "source": { "id": "p3" },
+            "target": { "id": "ds2" }
+          },
+          {
+            "shape": "flow",
+            "name": "8. Return File / 403 Forbidden",
+            "source": { "id": "p3" },
+            "target": { "id": "e1" }
+          },
+          {
+            "shape": "flow",
+            "name": "9. Send Audit Log Alert",
+            "source": { "id": "p2" },
+            "target": { "id": "e2" }
+          }
+        ]
+      }
+    ]
+  }
+}

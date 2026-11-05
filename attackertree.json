@@ -1,0 +1,133 @@
+{
+  "summary": {
+    "title": "Attack Tree - Unauthorized Rental Agreement Access",
+    "owner": "RoadReady Security Team",
+    "description": "Attack Tree for gaining unauthorized access to customer rental agreements"
+  },
+  "detail": {
+    "contributors": [],
+    "diagrams": [
+      {
+        "title": "Attack Tree Model",
+        "id": 1,
+        "diagramType": "STRIDE",
+        "cells": [
+          {
+            "shape": "process",
+            "name": "GOAL: Unauthorized Access to Agreement",
+            "id": "goal",
+            "type": "tm.Process"
+          },
+          {
+            "shape": "process",
+            "name": "OR: Object ID Tampering (IDOR)",
+            "id": "branch1",
+            "type": "tm.Process"
+          },
+          {
+            "shape": "process",
+            "name": "OR: File Path Traversal",
+            "id": "branch2",
+            "type": "tm.Process"
+          },
+          {
+            "shape": "process",
+            "name": "OR: Session Token Hijacking",
+            "id": "branch3",
+            "type": "tm.Process"
+          },
+          {
+            "shape": "actor",
+            "name": "AND: Authenticate as Valid Customer",
+            "id": "leaf1",
+            "type": "tm.Actor"
+          },
+          {
+            "shape": "actor",
+            "name": "AND: Modify ID in GET Parameter",
+            "id": "leaf2",
+            "type": "tm.Actor"
+          },
+          {
+            "shape": "actor",
+            "name": "AND: Target GET /api/download Route",
+            "id": "leaf3",
+            "type": "tm.Actor"
+          },
+          {
+            "shape": "actor",
+            "name": "AND: Inject Relative Traversal Path",
+            "id": "leaf4",
+            "type": "tm.Actor"
+          },
+          {
+            "shape": "actor",
+            "name": "AND: Intercept Auth Header Token",
+            "id": "leaf5",
+            "type": "tm.Actor"
+          },
+          {
+            "shape": "actor",
+            "name": "AND: Replay Token from Untrusted Origin",
+            "id": "leaf6",
+            "type": "tm.Actor"
+          },
+          {
+            "shape": "flow",
+            "name": "Enables",
+            "source": { "id": "branch1" },
+            "target": { "id": "goal" }
+          },
+          {
+            "shape": "flow",
+            "name": "Enables",
+            "source": { "id": "branch2" },
+            "target": { "id": "goal" }
+          },
+          {
+            "shape": "flow",
+            "name": "Enables",
+            "source": { "id": "branch3" },
+            "target": { "id": "goal" }
+          },
+          {
+            "shape": "flow",
+            "name": "Requires",
+            "source": { "id": "leaf1" },
+            "target": { "id": "branch1" }
+          },
+          {
+            "shape": "flow",
+            "name": "Requires",
+            "source": { "id": "leaf2" },
+            "target": { "id": "branch1" }
+          },
+          {
+            "shape": "flow",
+            "name": "Requires",
+            "source": { "id": "leaf3" },
+            "target": { "id": "branch2" }
+          },
+          {
+            "shape": "flow",
+            "name": "Requires",
+            "source": { "id": "leaf4" },
+            "target": { "id": "branch2" }
+          },
+          {
+            "shape": "flow",
+            "name": "Requires",
+            "source": { "id": "leaf5" },
+            "target": { "id": "branch3" }
+          },
+          {
+            "shape": "flow",
+            "name": "Requires",
+            "source": { "id": "leaf6" },
+            "target": { "id": "branch3" }
+          }
+        ]
+      }
+    ]
+  }
+}
